@@ -19,14 +19,14 @@ namespace API_TOOL{
     {
 
         /* float EZ_MaterialBase
-        GameObject EZ_MaterialWood;          // This will be the material mulitplier?
+        GameObject EZ_MaterialWood;          
         GameObject EZ_MaterialMetal;
         GameObject EZ_MaterialGlass;
-        GameObject[] EZ_Materials;*/         // Or a list...since removing and adding elements is easier.
+        GameObject[] EZ_Materials;*/         
 
         List<string> EZ_Materials;      //Compare the strings to get default floats
 
-        float EZ_MaterialWood;          // This will be the material mulitplier?
+        float EZ_MaterialWood;          
         float EZ_MaterialMetal;
         float EZ_MaterialGlass;
         

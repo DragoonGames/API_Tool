@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 namespace API_TOOL
 {
+
+    
     // Custom Editor using SerializedProperties.
     // Automatic handling of multi-object editing, undo, and prefab overrides.
     [CustomEditor(typeof(BaseCharacter))]
@@ -12,19 +14,33 @@ namespace API_TOOL
 
     public class BaseCharacterEditor : Editor
     {
+        SerializedProperty headProp;
+        SerializedProperty torsoProp;
+        SerializedProperty leftArmProp;
+        SerializedProperty rightArmProp;
+        SerializedProperty leftLegProp;
+        SerializedProperty rightLegProp;
+        SerializedProperty multiplier;
+        bool defaultMultiplier = false;
+
         GameObject currentGO = Selection.activeGameObject;
 
         void OnEnable()
         {
+            headProp = serializedObject.FindProperty("EZ_BodyHead");
+            torsoProp = serializedObject.FindProperty("EZ_BodyTorso");
+            leftArmProp = serializedObject.FindProperty("EZ_BodyLeftArm");
+            rightArmProp = serializedObject.FindProperty("EZ_BodyRightArm");
+            leftLegProp = serializedObject.FindProperty("EZ_BodyLeftLeg");
+            rightLegProp = serializedObject.FindProperty("EZ_BodyRightLeg");
+            multiplier = serializedObject.FindProperty("EZ_Multiplier");
+
+            Debug.Log(defaultMultiplier);
+
             if (currentGO.GetComponent<BaseCharacter>().DefaultChoice == "Default")
             {
-                /*SerializedProperty headProp;
-                SerializedProperty torsoProp;
-                SerializedProperty leftArmProp;
-                SerializedProperty rightArmProp;
-                SerializedProperty leftLegProp;
-                SerializedProperty rightLegProp;
-                */
+                /**/
+                
 
                 Debug.Log(currentGO);
                 if (currentGO.GetComponent<BaseCharacter>().DefaultChoice == "Default")
@@ -43,6 +59,25 @@ namespace API_TOOL
             // Update the serializedProperty - always do this in the beginning of OnInspectorGUI.
             serializedObject.Update();
 
+            EditorGUILayout.BeginVertical(GUI.skin.box);
+            {
+                EditorGUILayout.PropertyField(headProp);
+                EditorGUILayout.PropertyField(torsoProp);
+                EditorGUILayout.PropertyField(leftArmProp);
+                EditorGUILayout.PropertyField(rightArmProp);
+                EditorGUILayout.PropertyField(leftLegProp);
+                EditorGUILayout.PropertyField(rightLegProp);
+            }
+            EditorGUILayout.EndVertical();
+
+            EditorGUILayout.Separator();
+
+            EditorGUILayout.BeginToggleGroup("Custom Multiplier", defaultMultiplier);
+            {
+                EditorGUILayout.PropertyField(multiplier);
+            }
+            EditorGUILayout.EndToggleGroup();
+
             // Show the custom GUI controls.
             /*EditorGUILayout.IntSlider(damageProp, 0, 100, new GUIContent("Damage"));
 
@@ -57,39 +92,12 @@ namespace API_TOOL
                 ProgressBar(armorProp.intValue / 100.0f, "Armor");
 
             EditorGUILayout.PropertyField(gunProp, new GUIContent("Gun Object"));*/
-            ListIterator("EZ_BodyParts");
+
             // Apply changes to the serializedProperty - always do this in the end of OnInspectorGUI.
             serializedObject.ApplyModifiedProperties();
         }
 
-        public void ListIterator(string listName)
-        {
-            //List object
-                    Debug.Log(listName.ToString());
-            SerializedProperty listIterator = serializedObject.FindProperty(listName);
-                    Debug.Log(listIterator.serializedObject.ToString());
-            Rect drawZone = GUILayoutUtility.GetRect(0f, 16f);
-                    //Debug.Log(drawZone);
-            bool showChildren = EditorGUI.PropertyField(drawZone, listIterator);
-                    //Debug.Log(showChildren);
-            listIterator.NextVisible(showChildren);
-                    Debug.Log(listIterator.ToString());
-
-            //List size
-            drawZone = GUILayoutUtility.GetRect(0f, 16f);
-            showChildren = EditorGUI.PropertyField(drawZone, listIterator);
-            bool toBeContinued = listIterator.NextVisible(showChildren);
-
-            //Elements
-            int listElement = 0;
-            while (toBeContinued)
-            {
-                drawZone = GUILayoutUtility.GetRect(0f, 16f);
-                showChildren = EditorGUI.PropertyField(drawZone, listIterator);
-                toBeContinued = listIterator.NextVisible(showChildren);
-                listElement++;
-            }
-        }
+       
         // Custom GUILayout progress bar.
         void ProgressBar(float value, string label)
         {

@@ -76,9 +76,18 @@ namespace API_TOOL
         [HideInInspector]
         public float BodyLowerRightLegRate = 1.03f;
         [HideInInspector]
-        public  float BodyLowerLeftLegRate     = 1.03f;
+        public  float BodyLowerLeftLegRate = 1.03f;
 
         string defaultChoice;
+
+    void Start() { 
+        EZ_BodyParts.Add(BodyLowerLeftLeg);
+        print(EZ_BodyParts.Count);
+    }
+
+    public List<Transform> EZ_Bodyparts {
+            get { return EZ_BodyParts; }
+        }
 
         /* Public accessor property for the Editor window to review the choice for each
          * cloned copy of this script. This can only be set upon construction*/
@@ -98,6 +107,8 @@ namespace API_TOOL
             attached = this.transform.parent.gameObject;
 
         }
+
+        
 
         /* For the Default Selection:
         ** 
